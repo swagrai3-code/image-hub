@@ -1,0 +1,39 @@
+#include <Servo.h>
+// Pin configuration
+const int trigPin =9;
+const int echoPin =10;
+Servo servoMotor;
+//varrablesam
+long duration;
+int distance;
+void setup() {
+//Initialize pins
+pinMode (trigPin,OUTPUT);
+pinMode (echoPin,INPUT);
+//Attach servo
+servoMotor.attach(10);
+// Start with lid closed
+
+servoMotor.write(0);
+
+}
+
+void loop(){
+//send ultrasonic pulse
+digitalWrite(trigPin,LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin,HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin,LOW);
+//Read echo
+duration=pulseIn(echoPin,HIGH);
+distance=duration*0.034/2;
+Serial.println(distance);
+//If object is within 20cm,openlid
+if(distance<=20){
+digitalWrite(trigPin,HIGH);
+  servoMotor.write(90);
+delay(5000);
+  servoMotor.write(0);
+  }
+} 
