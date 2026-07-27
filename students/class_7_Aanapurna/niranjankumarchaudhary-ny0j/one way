@@ -1,0 +1,11 @@
+#include <Servo.h>
+const int trigPin = 8;
+const int echoPin = 9;
+Servo servoMoter;
+long duration;
+int distance;
+void set() {
+  pinMode (trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
+  servoMoter.attach(10);// Servo connected to pin 3
+  servoMoter.write(0);
