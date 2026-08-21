@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ROBO LAB // Login</title>
+
+    <!-- Premium futuristic fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        /* =====================================================
+           ROOT
+        ===================================================== */
+
+        :root {
+            --bg: #05070d;
+            --cyan: #00eaff;
+            --blue: #0077ff;
+            --purple: #8a5cff;
+            --green: #00ff9d;
+
+            --white: #f2f7ff;
+            --muted: #788298;
+
+            --border: rgba(255, 255, 255, 0.09);
+
+            --display: "Orbitron", sans-serif;
+            --body: "Inter", sans-serif;
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background: var(--bg);
+            color: var(--white);
+
+            font-family: var(--body);
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           ANIMATED BACKGROUND
+        ===================================================== */
+
+        .background {
+            position: fixed;
+            inset: 0;
+
+            overflow: hidden;
+
+            z-index: -10;
+
+            background:
+                radial-gradient(
+                    circle at 15% 25%,
+                    rgba(0, 234, 255, 0.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 75%,
+                    rgba(138, 92, 255, 0.12),
+                    transparent 32%
+                ),
+                #05070d;
+        }
+
+
+        /* Futuristic floor grid */
+
+        .grid {
+            position: absolute;
+
+            width: 200%;
+            height: 200%;
+
+            left: -50%;
+            top: -50%;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 234, 255, 0.035) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(0, 234, 255, 0.035) 1px,
+                    transparent 1px
+                );
+
+            background-size: 55px 55px;
+
+            transform:
+                perspective(500px)
+                rotateX(60deg);
+
+            animation: gridMove 15s linear infinite;
+        }
+
+        @keyframes gridMove {
+
+            from {
+                transform:
+                    perspective(500px)
+                    rotateX(60deg)
+                    translateY(0);
+            }
+
+            to {
+                transform:
+                    perspective(500px)
+                    rotateX(60deg)
+                    translateY(55px);
+            }
+        }
+
+
+        /* Ambient glows */
+
+        .glow {
+            position: absolute;
+
+            width: 450px;
+            height: 450px;
+
+            border-radius: 50%;
+
+            filter: blur(120px);
+
+            opacity: 0.16;
+        }
+
+        .glow-one {
+            background: var(--cyan);
+
+            left: -150px;
+            top: -150px;
+        }
+
+        .glow-two {
+            background: var(--purple);
+
+            right: -150px;
+            bottom: -150px;
+        }
+
+
+        /* =====================================================
+           PARTICLES
+        ===================================================== */
+
+        .particles span {
+            position: absolute;
+
+            width: 3px;
+            height: 3px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            box-shadow: 0 0 12px var(--cyan);
+
+            opacity: 0.5;
+
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        .particles span:nth-child(1) {
+            left: 10%;
+            top: 20%;
+        }
+
+        .particles span:nth-child(2) {
+            left: 25%;
+            top: 70%;
+            animation-delay: 1s;
+        }
+
+        .particles span:nth-child(3) {
+            left: 45%;
+            top: 15%;
+            animation-delay: 2s;
+        }
+
+        .particles span:nth-child(4) {
+            left: 65%;
+            top: 80%;
+            animation-delay: 3s;
+        }
+
+        .particles span:nth-child(5) {
+            left: 80%;
+            top: 25%;
+            animation-delay: 4s;
+        }
+
+        .particles span:nth-child(6) {
+            left: 90%;
+            top: 60%;
+            animation-delay: 5s;
+        }
+
+        .particles span:nth-child(7) {
+            left: 55%;
+            top: 50%;
+            animation-delay: 2.5s;
+        }
+
+        .particles span:nth-child(8) {
+            left: 15%;
+            top: 90%;
+            animation-delay: 4.5s;
+        }
+
+        @keyframes particleFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-35px);
+            }
+        }
+
+
+        /* =====================================================
+           MAIN LAYOUT
+        ===================================================== */
+
+        .login-container {
+            width: min(1200px, 92%);
+
+            min-height: calc(100vh - 70px);
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                1.1fr
+                0.9fr;
+
+            align-items: center;
+
+            gap: 70px;
+        }
+
+
+        /* =====================================================
+           ROBOT SIDE
+        ===================================================== */
+
+        .robot-section {
+            position: relative;
+
+            padding: 40px 0;
+        }
+
+
+        /* System status */
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 9px 14px;
+
+            border:
+                1px solid
+                rgba(0, 234, 255, 0.15);
+
+            background:
+                rgba(0, 234, 255, 0.04);
+
+            color: #86a2b2;
+
+            font-family: var(--display);
+
+            font-size: 10px;
+
+            letter-spacing: 2px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 12px var(--green);
+
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+
+        /* =====================================================
+           ROBOT
+        ===================================================== */
+
+        .robot {
+            position: relative;
+
+            width: 270px;
+            height: 330px;
+
+            margin:
+                55px auto
+                20px;
+
+            animation:
+                robotFloat
+                5s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes robotFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+
+        /* Antenna */
+
+        .antenna {
+            position: absolute;
+
+            top: -20px;
+            left: 50%;
+
+            width: 3px;
+            height: 28px;
+
+            transform: translateX(-50%);
+
+            background:
+                linear-gradient(
+                    to top,
+                    var(--cyan),
+                    transparent
+                );
+        }
+
+        .antenna::before {
+            content: "";
+
+            position: absolute;
+
+            top: -5px;
+            left: -4px;
+
+            width: 11px;
+            height: 11px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 10px var(--cyan),
+                0 0 30px var(--cyan);
+
+            animation: antennaPulse 1.5s infinite;
+        }
+
+        @keyframes antennaPulse {
+
+            50% {
+                box-shadow:
+                    0 0 4px var(--cyan),
+                    0 0 15px var(--cyan);
+            }
+        }
+
+
+        /* Robot head */
+
+        .robot-head {
+            position: absolute;
+
+            top: 10px;
+            left: 25px;
+
+            width: 220px;
+            height: 175px;
+
+            border:
+                2px solid
+                rgba(0, 234, 255, 0.5);
+
+            border-radius:
+                38px
+                38px
+                50px
+                50px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #1b2434,
+                    #080c14 60%
+                );
+
+            box-shadow:
+                inset
+                0 0 35px
+                rgba(0, 234, 255, 0.05),
+
+                0 0 30px
+                rgba(0, 234, 255, 0.08);
+
+            z-index: 2;
+        }
+
+        .robot-head::before {
+            content: "";
+
+            position: absolute;
+
+            inset: 9px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            border-radius: 30px;
+        }
+
+
+        /* Robot ears */
+
+        .ear {
+            position: absolute;
+
+            top: 50px;
+
+            width: 22px;
+            height: 70px;
+
+            border:
+                2px solid
+                rgba(0, 234, 255, 0.4);
+
+            background: #0c121d;
+        }
+
+        .left-ear {
+            left: -18px;
+
+            border-radius:
+                10px
+                0
+                0
+                10px;
+        }
+
+        .right-ear {
+            right: -18px;
+
+            border-radius:
+                0
+                10px
+                10px
+                0;
+        }
+
+        .ear::after {
+            content: "";
+
+            position: absolute;
+
+            width: 5px;
+            height: 30px;
+
+            top: 18px;
+            left: 7px;
+
+            background: var(--cyan);
+
+            opacity: 0.5;
+
+            box-shadow:
+                0 0 10px var(--cyan);
+        }
+
+
+        /* Robot face */
+
+        .face {
+            position: absolute;
+
+            inset:
+                30px
+                25px
+                25px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0, 234, 255, 0.03),
+                    rgba(138, 92, 255, 0.04)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.05);
+        }
+
+
+        /* Eyes */
+
+        .eye {
+            position: absolute;
+
+            top: 32px;
+
+            width: 55px;
+            height: 26px;
+
+            border:
+                2px solid
+                var(--cyan);
+
+            border-radius: 50%;
+
+            background:
+                rgba(0, 234, 255, 0.08);
+
+            box-shadow:
+                0 0 12px
+                rgba(0, 234, 255, 0.6),
+
+                inset
+                0 0 12px
+                rgba(0, 234, 255, 0.3);
+        }
+
+        .eye-left {
+            left: 18px;
+        }
+
+        .eye-right {
+            right: 18px;
+        }
+
+        .eye span {
+            position: absolute;
+
+            width: 17px;
+            height: 17px;
+
+            top: 2px;
+            left: 17px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 10px var(--cyan),
+                0 0 25px var(--cyan);
+
+            animation:
+                eyeScan
+                2.5s
+                ease-in-out
+                infinite;
+        }
+
+        @keyframes eyeScan {
+
+            0%,
+            100% {
+                transform: translateX(-8px);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+        }
+
+
+        /* Nose */
+
+        .nose {
+            position: absolute;
+
+            width: 4px;
+            height: 25px;
+
+            left: 50%;
+            top: 60px;
+
+            transform: translateX(-50%);
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 8px var(--cyan);
+        }
+
+
+        /* Robot mouth */
+
+        .mouth {
+            position: absolute;
+
+            left: 50%;
+            bottom: 13px;
+
+            transform: translateX(-50%);
+
+            display: flex;
+
+            gap: 5px;
+        }
+
+        .mouth span {
+            width: 5px;
+            height: 5px;
+
+            background: #607080;
+
+            border-radius: 1px;
+        }
+
+
+        /* Robot neck */
+
+        .robot-neck {
+            position: absolute;
+
+            top: 180px;
+            left: 105px;
+
+            width: 60px;
+            height: 30px;
+
+            background: #151d2a;
+
+            border:
+                2px solid
+                rgba(0, 234, 255, 0.25);
+        }
+
+
+        /* Robot body */
+
+        .robot-body {
+            position: absolute;
+
+            top: 205px;
+            left: 15px;
+
+            width: 240px;
+            height: 125px;
+
+            border:
+                2px solid
+                rgba(0, 234, 255, 0.35);
+
+            border-radius:
+                35px
+                35px
+                15px
+                15px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #182130,
+                    #080c13
+                );
+
+            box-shadow:
+                0 0 35px
+                rgba(0, 234, 255, 0.06),
+
+                inset
+                0 0 30px
+                rgba(0, 234, 255, 0.03);
+        }
+
+
+        /* Chest */
+
+        .chest-panel {
+            position: absolute;
+
+            width: 115px;
+            height: 70px;
+
+            top: 25px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            border:
+                1px solid
+                rgba(0, 234, 255, 0.2);
+
+            border-radius: 12px;
+
+            background: #090e17;
+        }
+
+        .panel-line {
+            position: absolute;
+
+            width: 30px;
+            height: 3px;
+
+            top: 12px;
+            left: 15px;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 8px var(--cyan);
+        }
+
+        .panel-line.short {
+            top: 20px;
+
+            width: 18px;
+
+            opacity: 0.4;
+        }
+
+
+        /* Robot core */
+
+        .core {
+            position: absolute;
+
+            width: 28px;
+            height: 28px;
+
+            left: 50%;
+            top: 30px;
+
+            transform:
+                translate(-50%, -50%);
+
+            border:
+                2px solid
+                var(--cyan);
+
+            border-radius: 50%;
+
+            box-shadow:
+                0 0 10px var(--cyan),
+                inset 0 0 8px var(--cyan);
+
+            animation:
+                corePulse
+                2s
+                infinite;
+        }
+
+        @keyframes corePulse {
+
+            50% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.15);
+
+                box-shadow:
+                    0 0 25px var(--cyan),
+                    inset 0 0 15px var(--cyan);
+            }
+        }
+
+
+        /* =====================================================
+           ROBOT TEXT
+        ===================================================== */
+
+        .robot-info {
+            max-width: 500px;
+        }
+
+        .system-label {
+            color: var(--cyan);
+
+            font-family: var(--display);
+
+            font-size: 10px;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 15px;
+        }
+
+        .robot-info h1 {
+            font-family: var(--display);
+
+            font-size:
+                clamp(
+                    38px,
+                    5vw,
+                    62px
+                );
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+        }
+
+        .robot-info h1 span {
+            color: transparent;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--cyan),
+                    #6aa8ff,
+                    var(--purple)
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .description {
+            margin-top: 22px;
+
+            color: var(--muted);
+
+            line-height: 1.7;
+
+            max-width: 420px;
+        }
+
+        .coordinates {
+            display: flex;
+
+            gap: 25px;
+
+            margin-top: 35px;
+
+            color: #3e4b61;
+
+            font-family: var(--display);
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =====================================================
+           LOGIN SECTION
+        ===================================================== */
+
+        .login-section {
+            display: flex;
+
+            justify-content: center;
+        }
+
+
+        /* Login card */
+
+        .login-card {
+            position: relative;
+
+            width: min(430px, 100%);
+
+            padding: 42px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(17, 23, 38, 0.88),
+                    rgba(7, 10, 18, 0.82)
+                );
+
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,0.5),
+
+                inset
+                0 1px 0
+                rgba(255,255,255,0.04);
+
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            top: -120px;
+            right: -80px;
+
+            border-radius: 50%;
+
+            background: var(--cyan);
+
+            filter: blur(100px);
+
+            opacity: 0.12;
+        }
+
+        .login-card::after {
+            content: "";
+
+            position: absolute;
+
+            left: 15%;
+            right: 15%;
+
+            top: 0;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--cyan),
+                    transparent
+                );
+
+            box-shadow:
+                0 0 15px var(--cyan);
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-family: var(--display);
+
+            font-weight: 700;
+
+            letter-spacing: 3px;
+
+            font-size: 16px;
+
+            margin-bottom: 45px;
+        }
+
+        .brand-icon {
+            width: 31px;
+            height: 31px;
+
+            border:
+                1px solid
+                var(--cyan);
+
+            display: grid;
+
+            place-items: center;
+
+            transform: rotate(45deg);
+
+            box-shadow:
+                0 0 15px
+                rgba(0,234,255,0.2);
+        }
+
+        .brand-icon div {
+            width: 11px;
+            height: 11px;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 12px
+                var(--cyan);
+        }
+
+        .brand-icon + span {
+            transform: translateX(4px);
+        }
+
+        .accent {
+            color: var(--cyan);
+        }
+
+
+        /* =====================================================
+           HEADING
+        ===================================================== */
+
+        .heading p {
+            color: var(--muted);
+
+            font-family: var(--display);
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 10px;
+        }
+
+        .heading h2 {
+            font-family: var(--display);
+
+            font-size: 25px;
+
+            letter-spacing: 1px;
+        }
+
+        .heading h2 span {
+            color: var(--cyan);
+        }
+
+        .line {
+            display: block;
+
+            width: 45px;
+            height: 2px;
+
+            margin-top: 14px;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 10px
+                var(--cyan);
+        }
+
+
+        /* =====================================================
+           INPUTS
+        ===================================================== */
+
+        form {
+            margin-top: 35px;
+        }
+
+        .input-group {
+            margin-bottom: 23px;
+        }
+
+        .input-group label {
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: #7d879a;
+
+            font-family: var(--display);
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 16px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #536175;
+
+            font-size: 13px;
+
+            z-index: 2;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+
+            width: 100%;
+            height: 53px;
+
+            padding: 0 45px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            color: white;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            font-family: var(--body);
+
+            font-size: 13px;
+
+            transition: 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #3e485a;
+        }
+
+        input:focus {
+            border-color:
+                rgba(0,234,255,0.5);
+
+            background:
+                rgba(0,234,255,0.025);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(0,234,255,0.05),
+
+                0 0 20px
+                rgba(0,234,255,0.05);
+        }
+
+
+        /* Password button */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #536175;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .password-toggle:hover {
+            color: var(--cyan);
+        }
+
+
+        /* =====================================================
+           OPTIONS
+        ===================================================== */
+
+        .form-options {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin:
+                5px
+                0
+                25px;
+
+            font-size: 11px;
+
+            color: #667186;
+        }
+
+        .remember {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            cursor: pointer;
+        }
+
+        .remember input {
+            display: none;
+        }
+
+        .checkmark {
+            width: 13px;
+            height: 13px;
+
+            border:
+                1px solid
+                #364154;
+
+            border-radius: 3px;
+
+            transition: 0.2s;
+        }
+
+        .remember input:checked + .checkmark {
+            background: var(--cyan);
+
+            border-color:
+                var(--cyan);
+
+            box-shadow:
+                0 0 10px
+                rgba(0,234,255,0.5);
+        }
+
+        .form-options a {
+            color: #78869d;
+
+            text-decoration: none;
+
+            transition: 0.3s;
+        }
+
+        .form-options a:hover {
+            color: var(--cyan);
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-btn {
+            width: 100%;
+            height: 54px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 18px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            color: #001015;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #00d9ee,
+                    #00f0ff
+                );
+
+            font-family: var(--display);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 0 25px
+                rgba(0,234,255,0.15);
+
+            transition:
+                transform 0.25s,
+                box-shadow 0.25s;
+        }
+
+        .login-btn .arrow {
+            font-size: 20px;
+
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0,234,255,0.25);
+        }
+
+        .login-btn:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           DIVIDER
+        ===================================================== */
+
+        .divider {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin:
+                28px
+                0
+                20px;
+
+            color: #3e4859;
+
+            font-family: var(--display);
+
+            font-size: 7px;
+
+            letter-spacing: 2px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            height: 1px;
+
+            flex: 1;
+
+            background:
+                rgba(255,255,255,0.06);
+        }
+
+
+        /* =====================================================
+           SOCIAL LOGIN
+        ===================================================== */
+
+        .social-login {
+            display: grid;
+
+            grid-template-columns:
+                1fr
+                1fr;
+
+            gap: 10px;
+        }
+
+        .social-btn {
+            height: 45px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color: #a5afbf;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .social-btn span {
+            color: white;
+
+            font-weight: 600;
+        }
+
+        .social-btn:hover {
+            border-color:
+                rgba(0,234,255,0.3);
+
+            color: white;
+
+            background:
+                rgba(0,234,255,0.03);
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           SIGN UP
+        ===================================================== */
+
+        .signup {
+            margin-top: 28px;
+
+            text-align: center;
+
+            color: #4e596b;
+
+            font-size: 10px;
+
+            letter-spacing: 0.5px;
+        }
+
+        .signup a {
+            margin-left: 5px;
+
+            color: var(--cyan);
+
+            text-decoration: none;
+
+            font-family: var(--display);
+
+            font-size: 8px;
+
+            letter-spacing: 1px;
+        }
+
+        .signup a:hover {
+            text-shadow:
+                0 0 10px
+                var(--cyan);
+        }
+
+
+        /* =====================================================
+           SECURITY
+        ===================================================== */
+
+        .security {
+            margin-top: 25px;
+
+            padding-top: 17px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.05);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            color: #384456;
+
+            font-family: var(--display);
+
+            font-size: 7px;
+
+            letter-spacing: 1.5px;
+        }
+
+        .lock {
+            color: #536175;
+        }
+
+        .secure-dot {
+            width: 4px;
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 7px
+                var(--green);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            width: min(1200px, 92%);
+
+            margin: auto;
+
+            height: 50px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            color: #283244;
+
+            font-family: var(--display);
+
+            font-size: 7px;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .login-container {
+                grid-template-columns: 1fr;
+
+                gap: 20px;
+
+                padding:
+                    50px
+                    0;
+            }
+
+            .robot-section {
+                text-align: center;
+            }
+
+            .robot {
+                transform: scale(0.85);
+
+                margin-top: 35px;
+
+                margin-bottom: 0;
+            }
+
+            .robot-info {
+                margin: auto;
+            }
+
+            .description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .coordinates {
+                justify-content: center;
+            }
+
+            .login-section {
+                padding-bottom: 30px;
+            }
+        }
+
+
+        @media (max-width: 520px) {
+
+            .login-container {
+                width: 90%;
+            }
+
+            .robot {
+                transform: scale(0.7);
+
+                margin-top: 20px;
+
+                margin-bottom: -30px;
+            }
+
+            .robot-info h1 {
+                font-size: 38px;
+            }
+
+            .coordinates {
+                display: none;
+            }
+
+            .login-card {
+                padding:
+                    30px
+                    24px;
+
+                border-radius: 18px;
+            }
+
+            .brand {
+                margin-bottom: 35px;
+            }
+
+            footer {
+                display: none;
+            }
+        }
+
+
+        /* =====================================================
+           REDUCED MOTION
+        ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+
+                animation-iteration-count: 1 !important;
+
+                scroll-behavior: auto !important;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ===================================================== -->
+
+    <div class="background">
+
+        <div class="grid"></div>
+
+        <div class="glow glow-one"></div>
+        <div class="glow glow-two"></div>
+
+        <div class="particles">
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="login-container">
+
+
+        <!-- =================================================
+             ROBOT SECTION
+        ================================================= -->
+
+        <section class="robot-section">
+
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
+
+
+
+            <!-- ROBOT -->
+
+            <div class="robot">
+
+
+                <!-- Antenna -->
+
+                <div class="antenna"></div>
+
+
+                <!-- Head -->
+
+                <div class="robot-head">
+
+
+                    <div class="ear left-ear"></div>
+
+                    <div class="ear right-ear"></div>
+
+
+                    <div class="face">
+
+
+                        <!-- Eyes -->
+
+                        <div class="eye eye-left">
+                            <span></span>
+                        </div>
+
+                        <div class="eye eye-right">
+                            <span></span>
+                        </div>
+
+
+                        <!-- Nose -->
+
+                        <div class="nose"></div>
+
+
+                        <!-- Mouth -->
+
+                        <div class="mouth">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Neck -->
+
+                <div class="robot-neck"></div>
+
+
+                <!-- Body -->
+
+                <div class="robot-body">
+
+                    <div class="chest-panel">
+
+                        <span class="panel-line"></span>
+
+                        <span class="panel-line short"></span>
+
+                        <div class="core"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Robot information -->
+
+            <div class="robot-info">
+
+                <p class="system-label">
+                    ROBOTICS // 07
+                </p>
+
+
+                <h1>
+                    BUILD THE
+                    <br>
+
+                    <span>FUTURE.</span>
+                </h1>
+
+
+                <p class="description">
+
+                    Enter the neural interface and access
+                    your robotics command center.
+
+                </p>
+
+            </div>
+
+
+            <!-- System coordinates -->
+
+            <div class="coordinates">
+
+                <span>SYS.01</span>
+
+                <span>NEURAL LINK</span>
+
+                <span>ONLINE</span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOGIN SECTION
+        ================================================= -->
+
+        <section class="login-section">
+
+
+            <div class="login-card">
+
+
+                <!-- Brand -->
+
+                <div class="brand">
+
+                    <div class="brand-icon">
+                        <div></div>
+                    </div>
+
+                    <span>
+                        ROBO<span class="accent">LAB</span>
+                    </span>
+
+                </div>
+
+
+
+                <!-- Heading -->
+
+                <div class="heading">
+
+                    <p>
+                        WELCOME BACK
+                    </p>
+
+                    <h2>
+                        ACCESS
+                        <span>CORE</span>
+                    </h2>
+
+                    <span class="line"></span>
+
+                </div>
+
+
+
+                <!-- Login form -->
+
+                <form id="loginForm">
+
+
+                    <!-- Email -->
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            IDENTIFICATION
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                @
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="your@email.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Password -->
+
+                    <div class="input-group">
+
+                        <label for="password">
+                            SECURITY KEY
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ◆
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="password"
+                                placeholder="••••••••••"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="togglePassword"
+                                aria-label="Show password"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Options -->
+
+                    <div class="form-options">
+
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                id="remember"
+                            >
+
+                            <span class="checkmark"></span>
+
+                            Remember me
+
+                        </label>
+
+
+                        <a href="#">
+                            Forgot key?
+                        </a>
+
+
+                    </div>
+
+
+
+                    <!-- Login -->
+
+                    <button
+                        type="submit"
+                        class="login-btn"
+                    >
+
+                        <span>
+                            INITIALIZE LOGIN
+                        </span>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- Divider -->
+
+                <div class="divider">
+
+                    <span>
+                        OR CONNECT WITH
+                    </span>
+
+                </div>
+
+
+
+                <!-- Social -->
+
+                <div class="social-login">
+
+
+                    <button
+                        type="button"
+                        class="social-btn"
+                    >
+
+                        <span>G</span>
+
+                        Google
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="social-btn"
+                    >
+
+                        <span>GH</span>
+
+                        GitHub
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- Signup -->
+
+                <p class="signup">
+
+                    NEW TO THE LAB?
+
+                    <a href="#">
+                        CREATE ACCESS
+                    </a>
+
+                </p>
+
+
+
+                <!-- Security -->
+
+                <div class="security">
+
+                    <span class="lock">
+                        ⌁
+                    </span>
+
+                    ENCRYPTED CONNECTION
+
+                    <span class="secure-dot"></span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+
+        <span>
+            ROBO LAB © 2026
+        </span>
+
+        <span>
+            NEURAL SYSTEMS DIVISION
+        </span>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+        /* =========================================
+           PASSWORD VISIBILITY
+        ========================================= */
+
+        const password =
+            document.getElementById("password");
+
+        const togglePassword =
+            document.getElementById("togglePassword");
+
+
+        togglePassword.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    password.type === "password"
+                ) {
+
+                    password.type = "text";
+
+                    togglePassword.textContent = "◉";
+
+                    togglePassword.setAttribute(
+                        "aria-label",
+                        "Hide password"
+                    );
+
+                } else {
+
+                    password.type = "password";
+
+                    togglePassword.textContent = "◉";
+
+                    togglePassword.setAttribute(
+                        "aria-label",
+                        "Show password"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           LOGIN DEMO
+        ========================================= */
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        loginForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const button =
+                    document.querySelector(".login-btn");
+
+                const originalHTML =
+                    button.innerHTML;
+
+
+                button.innerHTML = `
+                    <span>AUTHENTICATING...</span>
+                    <span class="arrow">◌</span>
+                `;
+
+
+                button.style.opacity = "0.75";
+
+
+
+                setTimeout(function () {
+
+                    button.innerHTML = `
+                        <span>ACCESS GRANTED ✓</span>
+                        <span class="arrow">→</span>
+                    `;
+
+                    button.style.background =
+                        "linear-gradient(100deg,#00d98b,#00ffb2)";
+
+                    button.style.boxShadow =
+                        "0 0 30px rgba(0,255,157,.3)";
+
+
+                    setTimeout(function () {
+
+                        button.innerHTML =
+                            originalHTML;
+
+                        button.style.opacity =
+                            "1";
+
+                        button.style.background =
+                            "";
+
+                        button.style.boxShadow =
+                            "";
+
+                    }, 2200);
+
+
+                }, 1200);
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
